@@ -9,8 +9,6 @@ from langchain.chains import create_history_aware_retriever, create_retrieval_ch
 from langchain_community.llms import Ollama
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
-def get_response(user_input):
-    return "I dont know"
 
 def get_vectorStrore_from_url(url):
     # load the html text from the document and split it into chunks
@@ -53,7 +51,7 @@ def get_conversation_rag_chain(retriever_chain):
     llm = Ollama(model="phi")
 
     prompt = ChatPromptTemplate.from_messages([
-      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
+      ("system", "Answer precisely the user's questions based ONLY on the below context:\n\n{context}. Take you time and lest think about it step by step."),
       MessagesPlaceholder(variable_name="chat_history"),
       ("user", "{input}"),
     ])
@@ -61,6 +59,19 @@ def get_conversation_rag_chain(retriever_chain):
     stuff_document_chain = create_stuff_documents_chain(llm,prompt)
 
     return create_retrieval_chain(retriever_chain, stuff_document_chain)
+
+def get_response(user_input):
+    # show the conversation chain and generate the response in the chat
+    #
+    retriver_chain = get_context_retriever_chain(st.session_state.vector_store)
+    conversation_rag_chain = get_conversation_rag_chain(retriver_chain)
+
+    response = conversation_rag_chain.invoke({
+        "chat_history": st.session_state.chat_history,
+        "input": user_query
+    })
+
+    return response['answer']
 
 
 # streamlit app config
@@ -86,30 +97,14 @@ else:
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = get_vectorStrore_from_url(website_url)
     
-    # conversation chain
-    retriver_chain = get_context_retriever_chain(st.session_state.vector_store)
-
-    conversation_rag_chain = get_conversation_rag_chain(retriver_chain)
-
     # user input
     user_query = st.chat_input("Type here...")
     if user_query is not None and user_query != "":
 
-        # response = get_response(user_query)
-        response = conversation_rag_chain.invoke({
-            "chat_history": st.session_state.chat_history,
-            "input": user_query
-        })
-        st.write(response)
-
-        # st.session_state.chat_history.append(HumanMessage(content=user_query))
-        # st.session_state.chat_history.append(AIMessage(content=response))
-
-        retriver_documents = retriver_chain.invoke({
-            "chat_history": st.session_state.chat_history,
-            "input": user_query
-        })
-        st.write(retriver_documents)
+        response = get_response(user_query)
+        
+        st.session_state.chat_history.append(HumanMessage(content=user_query))
+        st.session_state.chat_history.append(AIMessage(content=response))
 
     # conversation history
     for message in st.session_state.chat_history:
