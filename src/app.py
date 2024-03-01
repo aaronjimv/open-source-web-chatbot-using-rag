@@ -51,7 +51,7 @@ def get_conversation_rag_chain(retriever_chain):
     llm = Ollama(model="phi")
 
     prompt = ChatPromptTemplate.from_messages([
-      ("system", "Answer precisely the user's questions based ONLY on the below context:\n\n{context}. Take you time and lest think about it step by step."),
+      ("system", "Answer precisely the user's questions based ONLY on the below context:\n\n{context}."),
       MessagesPlaceholder(variable_name="chat_history"),
       ("user", "{input}"),
     ])
