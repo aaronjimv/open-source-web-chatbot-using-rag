@@ -37,7 +37,7 @@ def get_context_retriever_chain(vector_store):
     prompt = ChatPromptTemplate.from_messages([
         MessagesPlaceholder(variable_name="chat_history"),
         ("user", "{input}"),
-        ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
+        ("user", "Given the above conversation, generate a search query to look up in order to get just the information relevant to the conversation")
     ])
 
     retriver_chain = create_history_aware_retriever(
@@ -56,7 +56,7 @@ def get_conversation_rag_chain(retriever_chain):
     llm = Ollama(model="phi")
 
     prompt = ChatPromptTemplate.from_messages([
-      ("system", "Answer precisely the user's questions based ONLY on the below context:\n\n{context}."),
+      ("system", "Generate a precisely answer that responds satisfactorily the user's questions based only on the below context:\n\n{context}"),
       MessagesPlaceholder(variable_name="chat_history"),
       ("user", "{input}"),
     ])
@@ -81,8 +81,8 @@ def get_response(user_input):
 
 # streamlit app config
 #
-st.set_page_config(page_title="Chat with a Website")
-st.title("Chat with a Website")
+st.set_page_config(page_title="Lets chat with a Website", page_icon="💻")
+st.title("Lets chat with a Website")
 
 # sidebar setup
 with st.sidebar:
