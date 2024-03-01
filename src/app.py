@@ -3,13 +3,14 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-#from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_community.llms import Ollama
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
+#   You can also use HuggingFaceHubEmbeddings() as embeddings:
+#    from langchain_community.embeddings import HuggingFaceHubEmbeddings
 
 def get_vectorStrore_from_url(url):
     # load the html text from the document and split it into chunks
@@ -23,7 +24,6 @@ def get_vectorStrore_from_url(url):
     document_chunks = text_splitter.split_documents(document)
 
     embeddings = OllamaEmbeddings(model="phi")
-    #vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
     vectore_store = Chroma.from_documents(document_chunks, embeddings)
 
     return vectore_store
