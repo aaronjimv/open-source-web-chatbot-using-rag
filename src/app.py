@@ -3,7 +3,8 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceHubEmbeddings
+#from langchain_community.embeddings import HuggingFaceHubEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_community.llms import Ollama
@@ -21,7 +22,9 @@ def get_vectorStrore_from_url(url):
     text_splitter = RecursiveCharacterTextSplitter()
     document_chunks = text_splitter.split_documents(document)
 
-    vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
+    embeddings = OllamaEmbeddings(model="phi")
+    #vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
+    vectore_store = Chroma.from_documents(document_chunks, embeddings)
 
     return vectore_store
 
@@ -37,7 +40,7 @@ def get_context_retriever_chain(vector_store):
     prompt = ChatPromptTemplate.from_messages([
         MessagesPlaceholder(variable_name="chat_history"),
         ("user", "{input}"),
-        ("user", "Given the above conversation, generate a search query to look up in order to get just the information relevant to the conversation")
+        ("user", "Given the above conversation, generate a search query to look up in order to get the information relevant to the conversation")
     ])
 
     retriver_chain = create_history_aware_retriever(
@@ -56,7 +59,7 @@ def get_conversation_rag_chain(retriever_chain):
     llm = Ollama(model="phi")
 
     prompt = ChatPromptTemplate.from_messages([
-      ("system", "Generate a precisely answer that responds satisfactorily the user's questions based only on the below context:\n\n{context}"),
+      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
       MessagesPlaceholder(variable_name="chat_history"),
       ("user", "{input}"),
     ])
