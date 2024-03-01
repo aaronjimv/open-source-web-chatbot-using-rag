@@ -6,6 +6,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever
+from langchain_community.llms import Ollama
 
 
 def get_response(user_input):
@@ -21,7 +22,6 @@ def get_vectorStrore_from_url(url):
     text_splitter = RecursiveCharacterTextSplitter()
     document_chunks = text_splitter.split_documents(document)
 
-    # maybe get a error with embedding
     vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
 
     return vectore_store
@@ -29,9 +29,9 @@ def get_vectorStrore_from_url(url):
 def get_context_retriever_chain(vector_store):
     # set up the llm, retriver and prompt to the retiver the chain
     #
-    llm = "To do"
+    llm = Ollama(model="phi")
 
-    retriver = vector_store.as_retriver()
+    retriver = vector_store.as_retriever()
 
     prompt = ChatPromptTemplate.from_messages([
         MessagesPlaceholder(variable_name="chat_history"),
