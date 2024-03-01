@@ -14,6 +14,7 @@ def get_vectorStrore_from_url(url):
     # load the html text from the document and split it into chunks
     #
     # store the chunk in a vectore store
+    #
     loader = WebBaseLoader(url)
     document = loader.load()
 
@@ -25,7 +26,9 @@ def get_vectorStrore_from_url(url):
     return vectore_store
 
 def get_context_retriever_chain(vector_store):
-    # set up the llm, retriver and prompt to the retiver the chain
+    # set up the llm, retriver and prompt to the retriver_chain
+    #
+    # retriver_chain -> retrieve relevant information from the database
     #
     llm = Ollama(model="phi")
 
@@ -46,7 +49,9 @@ def get_context_retriever_chain(vector_store):
     return retriver_chain
 
 def get_conversation_rag_chain(retriever_chain):
-    # create the context to generate the answer of the question
+    # summarize the contents of the context obtained from the webpage
+    #
+    # based on context generate the answer of the question
     #
     llm = Ollama(model="phi")
 
@@ -61,7 +66,7 @@ def get_conversation_rag_chain(retriever_chain):
     return create_retrieval_chain(retriever_chain, stuff_document_chain)
 
 def get_response(user_input):
-    # show the conversation chain and generate the response in the chat
+    #  invokes the chains created to generate a response to a given user query
     #
     retriver_chain = get_context_retriever_chain(st.session_state.vector_store)
     conversation_rag_chain = get_conversation_rag_chain(retriver_chain)
@@ -76,24 +81,26 @@ def get_response(user_input):
 
 # streamlit app config
 #
-st.set_page_config(page_title="Website Chat")
-st.title("Webiste Chat")
+st.set_page_config(page_title="Chat with a Website")
+st.title("Chat with a Website")
 
 # sidebar setup
 with st.sidebar:
     st.header("Setting")
-    website_url = st.text_input("website URL")
+    website_url = st.text_input("Type the URL here")
 
 if website_url is None or website_url == "":
-    st.info("Please enter a website URL")
+    st.info("Please enter a website URL...")
 
 else:
-    # sesion state
+    # Session State
+    #
+    # Check the chat history for follow the conversation
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = [
             AIMessage(content="Hello, I am a bot. How can I help you?"),
         ]
-    # check de vectordb
+    # Check if there are already info stored in the vectorDB
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = get_vectorStrore_from_url(website_url)
     
