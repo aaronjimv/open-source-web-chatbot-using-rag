@@ -28,9 +28,7 @@ To run the project, follow these steps:
    streamlit run src/app.py
    ```
 
-4. Access the web interface in your browser and enter a website URL to start chatting with the chatbot.
-
-Once the Streamlit app is running, enter a website URL in the sidebar and start chatting with the chatbot.
+4. Once the Streamlit app is running, enter a website URL in the sidebar and start chatting with the chatbot.
 
 ## What is RAG?
 
@@ -52,9 +50,9 @@ Retrieval and generation:
 
 * [LangChain Explained In 15 Minutes - A MUST Learn For Python Programmers](https://www.youtube.com/watch?v=mrjq3lFz23s)
 
-* [Documentation: Using ollama llm in LangChain](https://python.langchain.com/docs/integrations/llms/ollama)
+* [Documentation: ollama llm in LangChain](https://python.langchain.com/docs/integrations/llms/ollama)
 
-* [Documentation: Using ollama embeddings class in LangChain](https://python.langchain.com/docs/integrations/text_embedding/ollama)
+* [Documentation: ollama embeddings class in LangChain](https://python.langchain.com/docs/integrations/text_embedding/ollama)
 
 * [Documentation: Hugging Face Embedding class in LangChain](https://python.langchain.com/docs/integrations/text_embedding/huggingfacehub)
 
