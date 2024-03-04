@@ -48,8 +48,6 @@ Retrieval and generation:
 
 * [Tutorial | Chat with any Website using Python and Langchain (LATEST VERSION)](https://www.youtube.com/watch?v=bupx08ZgSFg)
 
-* [LangChain Explained In 15 Minutes - A MUST Learn For Python Programmers](https://www.youtube.com/watch?v=mrjq3lFz23s)
-
 * [Documentation: ollama llm in LangChain](https://python.langchain.com/docs/integrations/llms/ollama)
 
 * [Documentation: ollama embeddings class in LangChain](https://python.langchain.com/docs/integrations/text_embedding/ollama)
@@ -57,3 +55,7 @@ Retrieval and generation:
 * [Documentation: Hugging Face Embedding class in LangChain](https://python.langchain.com/docs/integrations/text_embedding/huggingfacehub)
 
 * [Documentation: Q&A with RAG](https://python.langchain.com/docs/use_cases/question_answering/)
+
+* [Nomic's New Embedding Model | nomic-embed-text](https://www.youtube.com/watch?v=LpcaeQZDVB8)
+
+* [Introducing Nomic Embed: A Truly Open Embedding Model](https://blog.nomic.ai/posts/nomic-embed-text-v1)
