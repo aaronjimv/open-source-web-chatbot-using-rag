@@ -3,11 +3,12 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceHubEmbeddings
+# from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_community.llms import Ollama
 from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_community.embeddings import OllamaEmbeddings
 
 #   You can also use ollama as embeddings:
 #    from langchain_community.embeddings import OllamaEmbeddings
@@ -26,7 +27,8 @@ def get_vectorStrore_from_url(url):
     text_splitter = RecursiveCharacterTextSplitter()
     document_chunks = text_splitter.split_documents(document)
 
-    vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
+    embeddings = OllamaEmbeddings(model='nomic-embed-text')
+    vectore_store = Chroma.from_documents(document_chunks, embeddings)
 
     return vectore_store
 
@@ -35,7 +37,7 @@ def get_context_retriever_chain(vector_store):
     #
     # retriver_chain -> retrieve relevant information from the database
     #
-    llm = Ollama(model="phi") # "or any other model that you have"
+    llm = Ollama(model='phi') # "or any other model that you have"
 
     retriver = vector_store.as_retriever()
 
@@ -58,7 +60,7 @@ def get_conversation_rag_chain(retriever_chain):
     #
     # based on context generate the answer of the question
     #
-    llm = Ollama(model="phi") # "or any other model that you have"
+    llm = Ollama(model='phi') # "or any other model that you have"
 
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
