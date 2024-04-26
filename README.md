@@ -1,6 +1,6 @@
 # Open Source Web Chatbot using RAG
 ---
-This project implements a web-based chatbot using the `LangChain` framework, `phi-2` model as llm with `ollama`, `chromadb` as vectorDB and `streamlit` as frontend. The chatbot is designed to interact with users based on the content of a specified website.
+This project implements a web-based chatbot using the `LangChain` framework, `phi-3` model as llm with `ollama`, `chromadb` as vectorDB and `streamlit` as frontend. The chatbot is designed to interact with users based on the content of a specified website.
 
 ## Features
 
