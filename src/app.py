@@ -31,7 +31,7 @@ def get_context_retriever_chain(vector_store):
     #
     # retriver_chain -> retrieve relevant information from the database
     #
-    llm = Ollama(model='phi') # "or any other model that you have"
+    llm = Ollama(model='phi3') # "or any other model that you have"
 
     retriver = vector_store.as_retriever()
 
@@ -54,7 +54,7 @@ def get_conversation_rag_chain(retriever_chain):
     #
     # based on context generate the answer of the question
     #
-    llm = Ollama(model='phi') # "or any other model that you have"
+    llm = Ollama(model='phi3') # "or any other model that you have"
 
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
