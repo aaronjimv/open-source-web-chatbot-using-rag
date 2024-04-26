@@ -13,12 +13,12 @@ from langchain_community.embeddings import HuggingFaceHubEmbeddings
     vectore_store = Chroma.from_documents(document_chunks, HuggingFaceHubEmbeddings())
 ```
 
-#### phi with ollama
+#### phi3 with ollama
 ```python
 from langchain_community.embeddings import OllamaEmbeddings
    
     ...
-    embeddings = OllamaEmbeddings(model='phi')
+    embeddings = OllamaEmbeddings(model='phi3')
     vectore_store = Chroma.from_documents(document_chunks, embeddings)
 ```
 
@@ -38,8 +38,8 @@ from langchain_community.embeddings import OllamaEmbeddings
 
 ### LLm
 
-I used `phi-2` model with ollama.
+I used `phi-3` model with ollama.
 
 ```bash
-ollama run phi
+ollama run phi3
 ```
