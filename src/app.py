@@ -18,7 +18,7 @@ def get_vectorStrore_from_url(url):
     loader = WebBaseLoader(url)
     document = loader.load()
 
-    text_splitter = RecursiveCharacterTextSplitter()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0) # To do: test performance
     document_chunks = text_splitter.split_documents(document)
 
     embeddings = OllamaEmbeddings(model='mxbai-embed-large')
@@ -33,7 +33,7 @@ def get_context_retriever_chain(vector_store):
     #
     llm = Ollama(model='phi3') # "or any other model that you have"
 
-    retriver = vector_store.as_retriever()
+    retriver = vector_store.as_retriever(k=2) # To do: test `k`
 
     prompt = ChatPromptTemplate.from_messages(
         [
