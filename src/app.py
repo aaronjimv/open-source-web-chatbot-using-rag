@@ -35,11 +35,13 @@ def get_context_retriever_chain(vector_store):
 
     retriver = vector_store.as_retriever()
 
-    prompt = ChatPromptTemplate.from_messages([
-        MessagesPlaceholder(variable_name="chat_history"),
-        ("user", "{input}"),
-        ("user", "Given the above conversation, generate a search query to look up in order to get the information relevant to the conversation")
-    ])
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("user", "{input}"),
+            ("user", "Given the above conversation, generate a search query to look up in order to get the information relevant to the conversation")
+        ]
+    )
 
     retriver_chain = create_history_aware_retriever(
         llm, 
@@ -56,11 +58,16 @@ def get_conversation_rag_chain(retriever_chain):
     #
     llm = Ollama(model='phi3') # "or any other model that you have"
 
-    prompt = ChatPromptTemplate.from_messages([
-      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
-      MessagesPlaceholder(variable_name="chat_history"),
-      ("user", "{input}"),
-    ])
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "Answer the user's questions based on the below context:\n\n{context}"
+            ),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("user", "{input}"),
+        ]
+    )
 
     stuff_document_chain = create_stuff_documents_chain(llm,prompt)
 
