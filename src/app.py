@@ -21,7 +21,7 @@ def get_vectorStrore_from_url(url):
     text_splitter = RecursiveCharacterTextSplitter()
     document_chunks = text_splitter.split_documents(document)
 
-    embeddings = OllamaEmbeddings(model='nomic-embed-text')
+    embeddings = OllamaEmbeddings(model='mxbai-embed-large')
     vectore_store = Chroma.from_documents(document_chunks, embeddings)
 
     return vectore_store
