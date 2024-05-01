@@ -21,7 +21,7 @@ def get_vectorStrore_from_url(url):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0) # To do: test performance
     document_chunks = text_splitter.split_documents(document)
 
-    embeddings = OllamaEmbeddings(model='mxbai-embed-large')
+    embeddings = OllamaEmbeddings(model='nomic-embed-text')
     vectore_store = Chroma.from_documents(document_chunks, embeddings)
 
     return vectore_store
